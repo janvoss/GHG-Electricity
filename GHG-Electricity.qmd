@@ -1,0 +1,44 @@
+---
+title: "GHG Electricity"
+author: "JV"
+format: html
+---
+# Introduction
+
+# Data
+
+## EEA
+
+```{r}
+# Data from EEA Homepage
+
+library(tidyverse)
+
+#gCO2e/kWh
+
+df<-read.csv("https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-14/download.csv") %>% 
+  filter(Member.State.text=="EU-27")
+
+head(df)
+
+```
+
+
+## Eurostat
+
+
+# Forecast
+
+## Forecast based on linear regression
+
+```{r}
+#plot
+
+df %>% ggplot(aes(Year.year, Greenhouse.gas..GHG..emission.intensity.number.1))+
+  geom_point()+
+  geom_smooth()+
+  theme_light()
+```
+
+
+## Forecast based on ARIMA
