@@ -79,4 +79,30 @@ ggplot(aes(Year.year, Greenhouse.gas..GHG..emission.intensity.number.1, ))+
 
 
 ## History and Trend GHG Intensity of Electricity in Member States
+```{r, fig.height=20}
+#| message: false
+#| warning: false
+
+df %>%
+  filter(Member.State.text !="EU-27") %>%
+  arrange(Year.year) %>%
+#   fill(Greenhouse.gas..GHG..emission.intensity.number.1,.direction = "down") %>%
+ggplot(aes(Year.year, Greenhouse.gas..GHG..emission.intensity.number.1, ))+
+  geom_point()+
+  #geom_line()+
+  geom_point(aes(y=Indicative.level.high.number), color="red")+
+  geom_point(aes(y=Indicative.level.low.number), color="red")+
+  geom_smooth(method='glm', fullrange=T)+ # linear
+  #geom_smooth(method='glm', formula = y~x + I(x^2),
+     # method.args = list(family = gaussian(link = 'log')),
+#  fullrange =T, color = "orange")+
+# geom_smooth(method="glm",
+#             formula = y ~ x + I(x^2), fullrange =T,color="green")+ # quadratic
+  xlim(min(df$Year.year), 2050)+
+  ylim(0, max(df$Greenhouse.gas..GHG..emission.intensity.number.1))+
+  theme_light()+
+  facet_wrap(~Member.State.text, scales="free_y", ncol = 3)
+```
+
+
 
