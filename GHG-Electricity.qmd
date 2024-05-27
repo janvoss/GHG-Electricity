@@ -2,43 +2,81 @@
 title: "GHG Electricity"
 author: "JV"
 format: html
+code-fold: true
 ---
 # Introduction
 
-# Data
+# Data (EEA)
 
-## EEA
+Data taken from European Environement Agency
+
+[EEA](https://www.eea.europa.eu/en)
+
+
+
+## Download Data
 
 ```{r}
+#| warning: false
+#| message: false
+
+
 # Data from EEA Homepage
 
 library(tidyverse)
 
 #gCO2e/kWh
 
-df<-read.csv("https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-14/download.csv") %>% 
-  filter(Member.State.text=="EU-27")
+df<-read.csv("https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-14/download.csv") # %>%
+  # filter(Member.State.text=="EU-27")
 
 head(df)
 
 ```
 
-
-## Eurostat
-
-
-# Forecast
-
-## Forecast based on linear regression
+## Boxplots GHG Intensity of Electricity in  Member States
 
 ```{r}
-#plot
+#| warning: false
+#| message: false
 
-df %>% ggplot(aes(Year.year, Greenhouse.gas..GHG..emission.intensity.number.1))+
+library(ggrepel)
+
+df %>% filter(Member.State.text!="EU-27",
+              Year.year %in% c(1990, 2000, 2010, 2020)) %>% #View() %>% 
+  ggplot(aes(Year.year, Greenhouse.gas..GHG..emission.intensity.number.1, group=Year.year, label=Member.State.text))+
+  geom_boxplot()+
+  geom_point(alpha=.5)+
+  geom_text_repel() # tbd: Select Member States
+```
+
+
+## History and Trend GHG Intensity of Electricity in EU
+
+```{r}
+#| message: false
+#| warning: false
+
+df %>%
+  filter(Member.State.text=="EU-27") %>%
+  arrange(Year.year) %>%
+#   fill(Greenhouse.gas..GHG..emission.intensity.number.1,.direction = "down") %>%
+ggplot(aes(Year.year, Greenhouse.gas..GHG..emission.intensity.number.1, ))+
   geom_point()+
-  geom_smooth()+
+  #geom_line()+
+  geom_point(aes(y=Indicative.level.high.number), color="red")+
+  geom_point(aes(y=Indicative.level.low.number), color="red")+
+  geom_smooth(method='glm', fullrange=T)+ # linear
+  #geom_smooth(method='glm', formula = y~x + I(x^2),
+     # method.args = list(family = gaussian(link = 'log')),
+#  fullrange =T, color = "orange")+
+ geom_smooth(method="glm",
+             formula = y ~ x + I(x^2), fullrange =T,color="green")+ # quadratic
+  xlim(min(df$Year.year), 2050)+
+  ylim(0, max(df$Greenhouse.gas..GHG..emission.intensity.number.1))+
   theme_light()
 ```
 
 
-## Forecast based on ARIMA
+## History and Trend GHG Intensity of Electricity in Member States
+
