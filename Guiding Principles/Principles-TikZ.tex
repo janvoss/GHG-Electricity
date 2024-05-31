@@ -1,0 +1,135 @@
+
+\documentclass[border=10pt]{standalone}
+\usepackage{smartdiagram} %für tikz
+\usepackage[english]{babel} %Sprache deutsch (für Silbentrennung)
+%\usepackage[utf8]{inputenc} %UTF-Code für Umlaute
+%\usepackage[T1]{fontenc} %Trennung von Wörtern mit Umlauten
+\usepackage{lmodern} %Schriftart
+%\usepackage{libertine}
+\renewcommand*\familydefault{\sfdefault} %Serifenlose Schrift als Standard
+\usepackage{microtype}
+\usesmartdiagramlibrary{additions}
+\usetikzlibrary{fit}
+\usetikzlibrary{decorations.pathreplacing}
+
+\tikzstyle{container} = [draw, rectangle, semithick, inner sep=0.3cm
+]
+
+%Aufzählungsstriche
+\AtBeginDocument{
+	\def\labelitemi{\normalfont\bfseries{--}}
+}
+
+
+\begin{document}
+	
+	\begin{tikzpicture}[
+		every node/.style = {shape=rectangle, % is not necessary, default node's shape is rectangle
+			rounded corners,
+			%	draw, semithick,
+			text width=3.5cm,
+			align=center,
+			node distance=0.1cm
+		}
+		]
+		
+		%Überschriften
+		\node (a)[text depth=.25ex  % Schrift immer auf der gleichen Höhe
+		]{\textbf{GHG Target}
+		};
+		
+		
+		\node (b)[text depth=.25ex, right = 4 cm of a
+		]{\textbf{Prerequisites}
+		};
+		
+		\node (c)[text depth=.25ex, right = 4 cm of b, text width = 6 cm
+		]{\textbf{Guiding Principles}
+		};
+		
+		%Spalten
+		\node[below= 2.5cm of a, draw, circle %, align=left
+		](zero){
+			Net zero emissions 
+		};
+		
+		\node[right= 1 cm of zero, %align=left, xshift= -2.5 cm, 
+		draw](feasibility){
+			Political feasibility 
+		};
+		
+		\node[right= 1cm of feasibility, 
+		yshift = -.5 cm,
+		%align=left,   xshift= 2.5 cm,
+		draw](A){
+			Avoid unnecessary cost
+		};
+		
+		\node[above = 1 cm of A, draw, %align=left
+		](B){
+			Fair burden sharing
+		};
+		
+		\node[above = 1 cm of B, draw, %align=left
+		](C){
+			Political Commitment 
+		};
+		
+		\node[below = 1 cm of A, draw, %align=left
+		](D){
+			Competitive Industry 
+		};
+		
+		\node[below= 1 cm of c, align=left, 
+		% draw,  
+		text width= 6 cm](){
+			\begin{itemize}
+				\item Technology openness: Enabling all suitable tech paths, including biofuels, e-fuels, H2
+				\item 	Cost efficiency
+				\item Level playing field
+				\item  Resilience
+				\item 	Equilibrated market approach: supply and demand side policies
+				\item Enabled (instead of planned) transformative processes	
+				\item \dots ?
+			\end{itemize}
+		};
+		
+		
+		%Horizontale Linie unter Überschriften	
+		\draw [
+		transform canvas={yshift=-0.1cm}
+		] (a.south west) -- (c.south east);
+		
+		%gestrichelte Linie zwischen Bewerten und Verändern
+		%\path [draw = none] (b) -- (c) node [midway, yshift = .5cm](Mitte_bc){};
+		%\node[below= 5.5cm of Mitte_bc](Mitte_bc2){};
+		%\draw [dashed, transform canvas ={xshift=1.5 cm}] (Mitte_bc) -- (Mitte_bc2);
+		
+		% Zusammenfassung Analyse und Praxis
+		
+		%	\node[below= 4cm of a, text width=0cm](a-l){};
+		%	\node[below= 4cm of b,   text width=0cm](b-r){};
+		
+		% Pfeile
+		
+		\draw[->] (zero) -- (feasibility);
+		
+		\draw[->] (feasibility.east) -- (A.west);
+		\draw[->] (feasibility.east) -- (B.west);
+		\draw[->] (feasibility.east) -- (C.west);
+		\draw[->] (feasibility.east) -- (D.west);
+		
+		% Geschweifte Klammer
+		
+		\draw [decorate,decoration={brace,amplitude=10pt, raise=1 cm}] (C.north east) --(D.south east);
+		
+		
+		
+		
+		%Überschrift
+		\path [draw=none] (a.west) -- (c.east) node [midway] (Mittelpunkt) {};	
+		\node[above= 1cm of Mittelpunkt, text width=15cm]{\Large Climate Action Target, Prerequisites,  and Guiding Principles};
+		
+	\end{tikzpicture}
+	
+\end{document}
