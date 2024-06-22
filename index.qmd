@@ -117,5 +117,7 @@ ggplot(aes(Year.year, Greenhouse.gas..GHG..emission.intensity.number.1, ))+
        caption = paste("Illustration: cep, Data: European Environment Agency, Data Download:", Sys.Date(),  sep = " "))
 ```
 
+# Guiding Principes
 
+![Text](/Guiding-Principles/Principles-TikZ.svg)
 
